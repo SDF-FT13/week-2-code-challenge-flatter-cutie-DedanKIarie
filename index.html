@@ -98,6 +98,23 @@
       }
     }
   });
+        document.getElementById("reset-btn").addEventListener("click", function () {
+        event.preventDefault()
+        if (currentCharacter) {
+          currentCharacter.votes = 0;
+          document.getElementById("vote-count").textContent = 0;
+          fetch(`http://localhost:3000/characters/${currentCharacter.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ votes: 0 }),
+          })
+            .then((res) => res.json())
+            .then((data) => console.log("Votes reset:", data))
+            .catch((error) => console.log("Error:", error));
+        }
+      });
 
       distribute();
     </script>
