@@ -28,13 +28,12 @@
         <button id="reset-btn">Reset Votes</button>
       </div>
 
-      <!-- Bonus only! Uncomment the elements below when you are ready to work on the bonus deliverables -->
-      <!-- 
+  
         <h4>Add New Character</h4>
         <form id="character-form">
           <div>
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" />
+            <input type="text" id="character-name" name="name" />
           </div>
           <div>
             <label for="image-url">Image URL</label>
@@ -42,7 +41,7 @@
           </div>
           <input type="submit" value="Add Character" />
         </form> 
-      -->
+
     </div>
     <script src="src/index.js"></script>
 
@@ -117,6 +116,50 @@
       });
 
       distribute();
+
+         document.getElementById("character-form").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    let nameInput = document.getElementById("character-name");
+    let imageInput = document.getElementById("image-url");
+
+    let name = nameInput.value.trim();
+    let image = imageInput.value.trim();
+
+    if (name && image) {
+        let newCharacter = {
+            name: name,
+            image: image,
+            votes: 0
+        };
+
+        let response = await fetch("http://localhost:3000/characters", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newCharacter)
+        });
+
+        if (response.ok) {
+            let character = await response.json();
+            addCharacterToBar(character);
+            showCharacterDetails(character);
+            nameInput.value = "";
+            imageInput.value = "";
+        }
+    }
+});
+
+
+function addCharacterToBar(character) {
+    let button = document.createElement("button");
+    button.textContent = character.name;
+    button.addEventListener("click", function () {
+        showCharacterDetails(character);
+    });
+    document.getElementById("character-bar").appendChild(button);
+}
     </script>
   </body>
 </html>
