@@ -64,13 +64,40 @@
 
         console.log(characters);
       }
-
+       let currentCharacter = null;
       function showCharacterDetails(character) {
         document.getElementById("name").textContent = character.name;
         document.getElementById("image").src = character.image;
         document.getElementById("vote-count").textContent = character.votes;
         document.getElementById("image").alt = character.name;
       }
+       document.getElementById("votes-form").addEventListener("submit", async function (event) {
+    event.preventDefault()
+
+    if (currentCharacter) {
+      let votesInput = document.getElementById("votes");
+      let newVotes = parseInt(votesInput.value, 10);
+
+      if (!isNaN(newVotes)) {
+        let updatedVotes = currentCharacter.votes + newVotes;
+
+   
+        let response = await fetch(`http://localhost:3000/characters/${currentCharacter.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            votes: updatedVotes
+          })
+        });
+
+        if (response.ok) {
+          currentCharacter.votes = updatedVotes; 
+          document.getElementById("vote-count").textContent = currentCharacter.votes;
+          votesInput.value = "";
+        } 
+      }
+    }
+  });
 
       distribute();
     </script>
