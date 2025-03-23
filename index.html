@@ -11,24 +11,7 @@
     <div id="character-bar">
       <!-- show characters names here -->
     </div>
-<script>
-  async function distribute() {
-    let response = await fetch("http://localhost:3000/characters");
-    let characters = await response.json();
-    
-    let characterBar = document.getElementById("character-bar");
 
-    characters.forEach(function (character) {
-      let button = document.createElement("button");
-      button.textContent = character.name;
-      characterBar.appendChild(button);
-    });
-
-    console.log(characters);
-  }
-
-  distribute();
-</script>
     <div class="characterInfo">
       <div id="detailed-info">
         <p id="name">Character's Name</p>
@@ -62,5 +45,34 @@
       -->
     </div>
     <script src="src/index.js"></script>
+
+     <script>
+      async function distribute() {
+        let response = await fetch("http://localhost:3000/characters");
+        let characters = await response.json();
+
+        let characterBar = document.getElementById("character-bar");
+
+        characters.forEach(function (character) {
+          let button = document.createElement("button");
+          button.textContent = character.name;
+          button.addEventListener("click", function () {
+            showCharacterDetails(character);
+          });
+          characterBar.appendChild(button);
+        });
+
+        console.log(characters);
+      }
+
+      function showCharacterDetails(character) {
+        document.getElementById("name").textContent = character.name;
+        document.getElementById("image").src = character.image;
+        document.getElementById("vote-count").textContent = character.votes;
+        document.getElementById("image").alt = character.name;
+      }
+
+      distribute();
+    </script>
   </body>
 </html>
