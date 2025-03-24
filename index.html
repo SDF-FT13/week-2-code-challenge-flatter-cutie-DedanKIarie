@@ -64,12 +64,13 @@
         console.log(characters);
       }
        let currentCharacter = null;
-      function showCharacterDetails(character) {
-        document.getElementById("name").textContent = character.name;
-        document.getElementById("image").src = character.image;
-        document.getElementById("vote-count").textContent = character.votes;
-        document.getElementById("image").alt = character.name;
-      }
+function showCharacterDetails(character) {
+    currentCharacter = character; 
+    document.getElementById("name").textContent = character.name;
+    document.getElementById("image").src = character.image;
+    document.getElementById("vote-count").textContent = character.votes;
+    document.getElementById("image").alt = character.name;
+}
        document.getElementById("votes-form").addEventListener("submit", async function (event) {
     event.preventDefault()
 
